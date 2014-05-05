@@ -1,0 +1,8 @@
+{
+	"ext_name": {
+		"message": "StreamNation"
+	},
+	"ext_description": {
+		"message": "Integrates actions in your page to upload content on your StreamNation account."
+	}
+}

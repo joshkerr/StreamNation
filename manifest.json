@@ -1,0 +1,21 @@
+{
+	"name": "__MSG_ext_name__",
+	"description": "StreamNation",
+	"version": "0.1.0",
+	"manifest_version": 2,
+	"default_locale": "en",
+	"icons": {
+		"256": "img/icon256.png"
+	},
+	"content_scripts": [{
+		"matches": ["http://*/*", "https://*/*"],
+		"js": ["js/lib/jquery-2.1.1.min.js", "js/content.js"],
+		"css": ["css/style.css"]
+	}],
+	"background" : {
+		"scripts": ["js/lib/jquery-2.1.1.min.js", "js/background.js"]
+	},
+	"permissions": [
+		"https://api.streamnation.com/*"
+	]
+}
