@@ -1,12 +1,97 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>StreamNation Options</title>
+		<title>StreamNation Settings</title>
 		<meta charset="utf-8">
+		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700" rel="stylesheet" type="text/css">
+		<link href="css/semantic.min.css" rel="stylesheet">
 		<link href="css/options.css" rel="stylesheet">
 		<script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/lib/angular.min.js"></script>
+		<script type="text/javascript" src="js/lib/semantic.min.js"></script>
 		<script type="text/javascript" src="js/options.js"></script>
 	</head>
-	<body>
+	<body ng-app="StreamNation" ng-controller="OptionsCtrl">
+		<div class="ui fixed transparent inverted main menu">
+			<div class="container">
+				<div class="title item">
+					StreamNation<b>:</b> Settings
+				</div>
+
+				<div class="right menu">
+					<a class="popup icon item" data-content="View project on Github" href="https://github.com/Apercu/StreamNation">
+						<i class="icon github"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+		<main class="ui page one column grid">
+		<section class="column">
+		<h2 class="ui dividing header">
+			Settings
+		</h2>
+
+		<h3>Account</h3>
+		<div class="ui action input">
+			<input type="email" placeholder="E-mail" ng-model="user.email">
+			<div class="ui button" ng-click="update('email', $event)" ng-class="{ disabled: oldUser.email === user.email }">Update</div>
+		</div>
+
+		<div class="ui action input">
+			<input type="text" placeholder="First Name" ng-model="user.first_name">
+			<div class="ui button" ng-click="update('firstname', $event)" ng-class="{ disabled: oldUser.first_name === user.first_name }">Update</div>
+		</div>
+
+		<div class="ui action input">
+			<input type="text" placeholder="Last Name" ng-model="user.last_name">
+			<div class="ui button" ng-click="update('lastname', $event)" ng-class="{ disabled: oldUser.last_name === user.last_name }">Update</div>
+		</div>
+
+		<h3>Defaults</h3>
+		<div class="ui stackable two column grid">
+			<div class="column">
+
+				<p>Default upload folder for <strong>videos</strong> is "{{ config.videos.defaultFolder.name }}".</p>
+				<div class="ui compact menu input">
+					<div class="ui simple dropdown item">
+						Change Upload Folder <i class="dropdown icon"></i>
+						<div class="menu">
+							<div class="item" ng-click="changeDefaultVideos()">/</div>
+							<div class="item" ng-repeat="item in library" ng-click="changeDefaultVideos(item)">{{ item.title }}</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ui action input">
+					<input type="text" placeholder="New Default Folder" ng-model="newVideosDefaultFolder">
+					<div class="ui button" ng-click="createVideosFolder()" ng-class="{ disabled: newVideosDefaultFolder == '' }">Create</div>
+				</div>
+			</div>
+			<div class="column ">
+
+				<p>Default upload folder for <strong>images</strong> is "{{ config.images.defaultFolder.name }}".</p>
+				<div class="ui compact menu input">
+					<div class="ui simple dropdown item">
+						Change Upload Folder <i class="dropdown icon"></i>
+						<div class="menu">
+							<div class="item" ng-click="changeDefaultImages()">/</div>
+							<div class="item" ng-repeat="item in library" ng-click="changeDefaultImages(item)">{{ item.title }}</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ui action input">
+					<input type="text" placeholder="New Default Folder" ng-model="newImagesDefaultFolder">
+					<div class="ui button" ng-click="createImagesFolder()" ng-class="{ disabled: newImagesDefaultFolder == '' }">Create</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="ui divider"></div>
+
+
+		</section>
+		</main>
 	</body>
 </html>

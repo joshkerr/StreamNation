@@ -1,6 +1,7 @@
 window.onload = function () {
 
 	var auth;
+	var	config;
 	var current = {};
 
 	$.ajaxSetup({
@@ -33,6 +34,15 @@ window.onload = function () {
 			auth = result.StreamNationAuth;
 		}
 		reloadUI(true);
+	});
+
+	chrome.storage.sync.get('StreamNationConfig', function (result) {
+		if (result === null || isEmpty(result) || result.StreamNationConfig === null) {
+			config.defaultFolder = '/';
+		}
+		else {
+			config = result.StreamNationConfig;
+		}
 	});
 
 	chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -119,7 +129,8 @@ window.onload = function () {
 			url: 'https://api.streamnation.com/api/v1/weblink/download',
 			data: {
 				auth_token: auth.auth_token,
-				uri: current.url
+				uri: current.url,
+				parent_id: config.videos.defaultFolder.id
 			},
 			dataType: 'json',
 			success: function (res) {

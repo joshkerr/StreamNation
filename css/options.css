@@ -1,0 +1,17 @@
+@font-face {
+	font-family: icons;
+	src: url(../fonts/icons.ttf);
+}
+
+body {
+	font-family: Open sans;
+	margin: 0;
+}
+
+.ui.input{
+	margin-top: 10px;
+}
+
+.hidden {
+	display: none;
+}

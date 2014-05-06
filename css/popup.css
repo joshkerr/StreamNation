@@ -11,6 +11,10 @@ body {
 	display: none;
 }
 
+.options {
+	cursor: pointer;
+}
+
 .main {
 	min-width: 300px;
 	min-height: 120px;
