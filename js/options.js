@@ -35,11 +35,26 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 				url: 'https://api.streamnation.com/api/v1/library',
 				data: { auth_token: auth.auth_token },
 				success: function (res) {
+					var defVidOk = false;
+					var defImgOk = false;
 					angular.forEach(res.library, function (item, key) {
 						if (item.type === 'CollectionContent') {
+							if (item.id === $scope.config.videos.defaultFolder.id) {
+								defVidOk = true;
+							}
+							if (item.id === $scope.config.images.defaultFolder.id) {
+								defImgOk = true;
+							}
 							$scope.library.push(item);
 						}
 					});
+					if (!defVidOk) {
+						$scope.config.videos.defaultFolder = { name: '/', id: null };
+					}
+					if (!defImgOk) {
+						$scope.config.images.defaultFolder = { name: '/', id: null };
+					}
+					chrome.storage.sync.set({ "StreamNationConfig" : $scope.config });
 					$scope.$digest();
 				}
 			});

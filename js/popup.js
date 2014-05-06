@@ -60,6 +60,10 @@ window.onload = function () {
 			current.domain === 'www.ted.com') {
 			$('.supportedUpload').fadeIn();
 		}
+		else {
+			$('.supportedUpload').text("This website is not supported yet.").fadeIn();
+			$('.supportedUpload').unbind('click');
+		}
 	});
 
 	$('.delogged form').bind('submit', function (e) {
@@ -135,7 +139,7 @@ window.onload = function () {
 			dataType: 'json',
 			success: function (res) {
 				$('.supportedUpload').addClass('inactive').unbind('click');
-				$('.message').text("Download started !").fadeIn();
+				$('.message').text("Upload started !").fadeIn();
 				setTimeout(function () {
 					$('.message').fadeOut();
 				}, 3000);

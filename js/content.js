@@ -1,4 +1,5 @@
 var auth;
+var config;
 var last = null;
 
 $.ajaxSetup({
@@ -26,6 +27,13 @@ function reloadAuth() {
 		}
 	});
 };
+chrome.storage.sync.get('StreamNationConfig', function (result) {
+	if (result === null || isEmpty(result) || result.StreamNationConfig === null) {
+	}
+	else {
+		config = result.StreamNationConfig;
+	}
+});
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
@@ -37,7 +45,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			url: 'https://api.streamnation.com/api/v1/weblink/download',
 			data: {
 				auth_token: auth.auth_token,
-				uri: last.src
+				uri: last.src,
+				parent_id: config.images.defaultFolder.id
 			},
 			dataType: 'json',
 			success: function (res) {
@@ -65,26 +74,73 @@ $(document).ready(function() {
 	reloadAuth();
 
 	/* YT */
-	$('.html5-video-player .ytp-button-watch-later').after('<div class="ytp-button yt-stream-nation-button" role="button" aria-label="StreamNation"><img class="stream-nation-icon" src="'+chrome.extension.getURL('img/icon25.png')+'"></div>');
+	$('#watch7-subscription-container .yt-uix-button-subscription-container').after('<span class="yt-uix-button-subscription-container youtube-stream-btn active"><button type="button" class="yt-uix-button yt-uix-button-subscribe-branded yt-uix-button-size-default "><img class="yt-uix-button-icon yt-valign-content youtube-success-icon hidden" src="https://s.ytimg.com/yts/img/pixel-vfl3z5WfW.gif"><span class="yt-uix-button-content">StreamNation</span></button></span>');
+	$('.youtube-stream-btn.active').click(function() {
 
-	$('.yt-stream-nation-button').click(function() {
-
-		$('.yt-stream-nation-button').html('<img class="stream-nation-icon" src="'+chrome.extension.getURL('img/littleloader.gif')+'">');
+		$('.youtube-stream-btn').after('<img class="stream-nation-icon youtube" src="'+chrome.extension.getURL('img/littleloader_w.gif')+'">');
 		$.ajax({
 			method: 'POST',
 			url: 'https://api.streamnation.com/api/v1/weblink/download',
 			data: {
 				auth_token: auth.auth_token,
-				uri: document.URL
+				uri: document.URL,
+				parent_id: config.videos.defaultFolder.id
 			},
 			dataType: 'json',
 			success: function (res) {
-				$('.yt-stream-nation-button').html("");
-				$('.yt-stream-nation-button').addClass('ytp-button-watch-later html5-async-success yt-stream-next').removeClass('yt-stream-nation-button');
+				$('.youtube-success-icon').removeClass('hidden');
+				$('.youtube-stream-btn').removeClass('active').addClass('inactive');
+				$('.stream-nation-icon').fadeOut();
 			},
 			error: function (err) {
-				$('.yt-stream-nation-button').html("");
-				$('.yt-stream-nation-button').addClass('ytp-button-watch-later html5-async-error yt-stream-next').removeClass('yt-stream-nation-button');
+				console.log(err);
+			}
+		});
+	});
+
+	/* Vimeo */
+	$('#clip #info #tools button:last').after('<button type="button" class="btn iconify_up_b js-clip_action_panel_btn vimeo-stream-btn">StreamNation</button>');
+	$('.vimeo-stream-btn.iconify_up_b').click(function () {
+
+		$(this).after('<img class="stream-nation-icon vimeo" src="'+chrome.extension.getURL('img/littleloader_w.gif')+'">');
+		$.ajax({
+			method: 'POST',
+			url: 'https://api.streamnation.com/api/v1/weblink/download',
+			data: {
+				auth_token: auth.auth_token,
+				uri: document.URL,
+				parent_id: config.videos.defaultFolder.id
+			},
+			success: function (res) {
+				$('.vimeo-stream-btn.iconify_up_b').addClass('inactive follow').removeClass('iconify_up_b');
+				$('.vimeo.stream-nation-icon').fadeOut();
+			},
+			error: function (err) {
+				console.log(err);
+			}
+		});
+	});
+
+	/* Dailymotion */
+	$('.media-block .sd_user_subscribe').after('<button class="button btn-sm btn-primary dailymotion-stream-btn active"><i class="icon-arrow_up pull-start"></i>StreamNation</button>');
+	$('.dailymotion-stream-btn.active').click(function() {
+
+		$(this).after('<img class="stream-nation-icon dailymotion" src="'+chrome.extension.getURL('img/littleloader_w.gif')+'">');
+		$.ajax({
+			method: 'POST',
+			url: 'https://api.streamnation.com/api/v1/weblink/download',
+			data: {
+				auth_token: auth.auth_token,
+				uri: document.URL,
+				parent_id: config.videos.defaultFolder.id
+			},
+			success: function (res) {
+				$('.dailymotion-stream-btn').removeClass('active').addClass('inactive');
+				$('.dailymotion-stream-btn .icon-arrow_up').addClass('icon-check').removeClass('icon-arrow_up');
+				$('.stream-nation-icon.dailymotion').fadeOut();
+			},
+			error: function (err) {
+				console.log(err);
 			}
 		});
 	});

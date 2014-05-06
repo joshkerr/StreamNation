@@ -1,28 +1,82 @@
-.yt-stream-nation-button {
-	width: 30px;
-	height: 27px;
-	float: right !important;
-	margin-right: 3px;
+.hidden {
+	display: none !important;
 }
 
-.yt-stream-next {
-	margin-top: 1px;
+.vimeo-stream-btn {
+	background-color: #37bcfd !important;
+	margin-left: 5px;
 }
 
-.yt-stream-nation-button img {
-	float: right;
-	width: 16px;
-	margin-top: 5px;
-}
-
-.stream-nation-icon {
+.vimeo-stream-btn:hover {
 	opacity: 0.8;
 }
 
-.stream-nation-icon:hover {
-	opacity: 1;
+.vimeo-stream-btn.inactive {
+	opacity: 0.4 !important;
 }
 
-.stream-nation-icon.inactive {
+.stream-nation-icon.vimeo {
+	position: absolute;
+	margin-left: 10px;
+}
+
+.youtube-stream-btn {
+	margin-left: 5px;
+}
+
+.youtube-stream-btn:hover {
+	opacity: 0.8;
+}
+
+.youtube-stream-btn.inactive {
+	opacity: 0.4 !important;
+}
+
+.youtube-stream-btn button {
+	background-color: #37bcfd !important;
+	outline: none !important;
+	background-image: initial;
+	margin-left: 5px;
+}
+
+.youtube-stream-btn button:hover {
+	background-image: initial;
+	opacity: 0.8;
+}
+
+.youtube-stream-btn button span {
+	margin-top: 2px;
+}
+
+.youtube-success-icon {
+	background: no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflg_V4SB.webp) -37px -1848px;
+	background-size: auto;
+	width: 12px;
+	height: 10px;
+	margin-top: -9px;
+	margin-right: 5px;
+}
+
+.stream-nation-icon.youtube {
+	position: absolute;
+	margin-left: 10px;
+	margin-top: -2px;
+}
+
+.dailymotion-stream-btn.btn-sm.button {
+	background-color: #37bcfd !important;
+	margin-left: 2px;
+}
+
+.dailymotion-stream-btn:hover {
+	opacity: 0.8;
+}
+
+.dailymotion-stream-btn.inactive {
 	opacity: 0.4;
+}
+
+.stream-nation-icon.dailymotion {
+	position: absolute;
+	margin-left: 5px;
 }
