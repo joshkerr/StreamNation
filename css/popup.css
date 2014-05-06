@@ -1,0 +1,115 @@
+body {
+	background-color: rgba(128, 128, 128, 0.1);
+}
+
+@font-face {
+	font-family: icomoon;
+	src: url(../fonts/icomoon.ttf);
+}
+
+.hidden {
+	display: none;
+}
+
+.main {
+	min-width: 300px;
+	min-height: 120px;
+	font-family: 'Oxygen', sans-serif;
+	font-size: 12px;
+}
+
+.main .delogged {
+	position : relative;
+}
+
+.main .loader {
+	position : absolute;
+	right: 20px;
+	top: 30px;
+}
+
+.main .delogged form input {
+	width: 60%;
+	height: 20px;
+	margin-bottom: 5px;
+}
+
+.main .delogged form {
+	margin-top: 10px;
+}
+
+.main .message {
+	color: #dc322f;
+}
+
+.main .upload {
+	font-size: 18px;
+	margin-right: 5px;
+}
+
+.main .connected {
+	position: relative;
+}
+
+.main .connected .username {
+	font-weight: bold;
+}
+
+.main .connected .delogbtn {
+	font-size: 15px;
+	position: absolute;
+	right: 2px;
+}
+
+.main .connected hr {
+	border: 0;
+	height: 1px;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-bottom: 1px solid white;
+}
+
+i {
+	opacity: 0.6;
+	cursor: pointer;
+}
+
+i:hover {
+	opacity: 1;
+}
+
+.supportedUpload {
+	padding: 10px;
+	margin: 10px 40px;
+	text-align: center;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	background-color: rgba(128, 128, 128, 0.3);
+	cursor: pointer;
+}
+
+.supportedUpload:hover {
+	background-color: rgba(128, 128, 128, 0.2);
+}
+
+.supportedUpload.inactive {
+	opacity: 0.4 !important;
+	background-color: rgba(128, 128, 128, 0.3);
+	cursor: default;
+}
+
+::-webkit-input-placeholder {
+	font-family: 'Oxygen', sans-serif;
+}
+
+:-moz-placeholder {
+	font-family: 'Oxygen', sans-serif;
+}
+
+::-moz-placeholder {
+	font-family: 'Oxygen', sans-serif;
+}
+
+:-ms-input-placeholder {
+	font-family: 'Oxygen', sans-serif;
+}
