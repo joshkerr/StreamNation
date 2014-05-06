@@ -1,3 +1,4 @@
+var auth = null;
 var streamNationContext = null;
 
 var newContext = {
@@ -17,18 +18,11 @@ else {
 	streamNationContext = chrome.contextMenus.create(newContext);
 }
 
-function getFileSize (url) {
-    if (/^http:\/\//.test(url)) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.overrideMimeType('text/plain; charset=x-user-defined');
-        xhr.send(null);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var fsize = null;
-                var type = xhr.getResponseHeader('Content-Type');
-                var B = xhr.responseText.length;
-            }
-        }
-    }
-};
+chrome.storage.sync.get('StreamNationAuth', function (result) {
+	if (result === null || isEmpty(result) || result.StreamNationAuth === null) {
+		auth = null;
+	}
+	else {
+		auth = result.StreamNationAuth;
+	}
+});

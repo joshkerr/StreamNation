@@ -1,0 +1,28 @@
+.yt-stream-nation-button {
+	width: 30px;
+	height: 27px;
+	float: right !important;
+	margin-right: 3px;
+}
+
+.yt-stream-next {
+	margin-top: 1px;
+}
+
+.yt-stream-nation-button img {
+	float: right;
+	width: 16px;
+	margin-top: 5px;
+}
+
+.stream-nation-icon {
+	opacity: 0.8;
+}
+
+.stream-nation-icon:hover {
+	opacity: 1;
+}
+
+.stream-nation-icon.inactive {
+	opacity: 0.4;
+}

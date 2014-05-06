@@ -135,6 +135,10 @@ window.onload = function () {
 		});
 	});
 
+	$('.options').click(function() {
+		chrome.tabs.create({ url: "../options.html" });
+	});
+
 	function domainName (url) {
 		var findDomain = document.createElement('a');
 		findDomain.href = url;
