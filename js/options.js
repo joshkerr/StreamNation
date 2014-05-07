@@ -29,9 +29,33 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 		chrome.storage.sync.set({ "StreamNationAuth" : auth });
 	}
 
-	function setExtraInfos (key, title, picture) {
+	function setExtraInfos (key, title, pictures, parentId) {
 		$scope.history[key].title = title;
-		$scope.history[key].picture = picture;
+		var last;
+		angular.forEach(pictures, function (pic) {
+			if (pic.type === 'thumb_low') {
+				last = pic.uri;
+			}
+		});
+		$scope.history[key].thumb = last;
+		if (parentId === 0) {
+			$scope.history[key].parent = '/';
+		}
+		else {
+			$.ajax({
+				method: 'GET',
+				url: 'https://api.streamnation.com/api/v1/content/' + parentId,
+				dataType: 'json',
+				data: { auth_token: auth.auth_token },
+				success: function (res) {
+					$scope.history[key].parent = res.content.title;
+					$scope.$digest();
+				},
+				error: function (err) {
+					console.log(err);
+				}
+			});
+		}
 	}
 
 	function extraInfos() {
@@ -42,8 +66,8 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 				data: { auth_token: auth.auth_token },
 				dataType: 'json',
 				success: function (res) {
-					console.log(res);
-					setExtraInfos(key, res.content.title);
+					setExtraInfos(key, res.content.title, res.content.thumbnails, res.content.parent_id);
+					$scope.$digest();
 				},
 				error: function (err) {
 					if (err.status === 404) {
@@ -62,7 +86,6 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 			auth = result.StreamNationAuth;
 			$scope.user = auth.user;
 			$scope.history = auth.history;
-			console.log($scope.history);
 			extraInfos();
 			$.extend($scope.oldUser, $scope.user);
 			$.ajax({

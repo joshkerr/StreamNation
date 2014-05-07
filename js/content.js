@@ -38,7 +38,7 @@ chrome.storage.sync.get('StreamNationConfig', function (result) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	reloadAuth();
-	if (auth && auth.auth_token && (last.src.indexOf("http://") === 0 || last.src.indexOf("https://") === 0)) {
+	if (auth && auth.auth_token && last && (last.src.indexOf("http://") === 0 || last.src.indexOf("https://") === 0)) {
 
 		$.ajax({
 			method: 'POST',
@@ -50,8 +50,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			},
 			dataType: 'json',
 			success: function (res) {
-				addToHistory(res.content.id, res.content.parent_id, res.content.created_at);
-				console.log(res);
+				if (res.content[0]) {
+					addToHistory(res.content[0].id, res.content[0].parent_id, res.content[0].created_at);
+				}
+				else {
+					addToHistory(res.content.id, res.content.parent_id, res.content.created_at);
+				}
 			},
 			error: function (err) {
 				console.log(err);
@@ -107,6 +111,9 @@ function reloadYoutube() {
 						},
 						dataType: 'json',
 						success: function (res) {
+							if (res.content[0]) {
+								res.content = res.content[0];
+							}
 							addToHistory(res.content.id, res.content.parent_id, res.content.created_at);
 							$('.youtube-success-icon').removeClass('hidden');
 							$('.youtube-stream-btn').removeClass('active').addClass('inactive');
@@ -148,6 +155,9 @@ $(document).ready(function() {
 				parent_id: config.videos.defaultFolder.id
 			},
 			success: function (res) {
+				if (res.content[0]) {
+					res.content = res.content[0];
+				}
 				addToHistory(res.content.id, res.content.parent_id, res.content.created_at);
 				$('.vimeo-stream-btn.iconify_up_b').addClass('inactive follow').removeClass('iconify_up_b');
 				$('.vimeo.stream-nation-icon').fadeOut();
@@ -173,6 +183,9 @@ $(document).ready(function() {
 				parent_id: config.videos.defaultFolder.id
 			},
 			success: function (res) {
+				if (res.content[0]) {
+					res.content = res.content[0];
+				}
 				addToHistory(res.content.id, res.content.parent_id, res.content.created_at);
 				$('.dailymotion-stream-btn').removeClass('active').addClass('inactive');
 				$('.dailymotion-stream-btn .icon-arrow_up').addClass('icon-check').removeClass('icon-arrow_up');

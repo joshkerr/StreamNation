@@ -138,6 +138,9 @@ window.onload = function () {
 			},
 			dataType: 'json',
 			success: function (res) {
+				if (res.content[0]) {
+					res.content = res.content[0];
+				}
 				var saveUpload = {
 					id: res.content.id,
 					parent_id: res.content.parent_id,

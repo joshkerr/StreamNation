@@ -93,10 +93,10 @@
 			Clear
 		</div>
 		<div class="ui selection list history">
-			<div class="item" ng-repeat="item in history" ng-click="viewSource(item.source)">
+			<div class="item" ng-repeat="item in history track by $index" ng-click="viewSource(item.source)">
 				<img class="ui avatar image" src="{{ item.thumb }}">
 				<div class="content">
-					<div class="header">{{ item.title }}</div>
+					<div class="header">{{ item.title }}<em> in {{ item.parent }}</em></div>
 					{{ item.date | date: 'dd/MM - hh:mm:ss' }}
 				</div>
 			</div>
