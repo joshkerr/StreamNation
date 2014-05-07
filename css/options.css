@@ -15,3 +15,7 @@ body {
 .hidden {
 	display: none;
 }
+
+.menu .container {
+	padding: 0 200px;
+}
