@@ -87,6 +87,21 @@
 			</div>
 		</div>
 
+		<h3>History</h3>
+		<div class="ui basic button" ng-click="deleteHistory()">
+			<i class="icon trash"></i>
+			Clear
+		</div>
+		<div class="ui selection list history">
+			<div class="item" ng-repeat="item in history" ng-click="viewSource(item.source)">
+				<img class="ui avatar image" src="{{ item.thumb }}">
+				<div class="content">
+					<div class="header">{{ item.title }}</div>
+					{{ item.date | date: 'dd/MM - hh:mm:ss' }}
+				</div>
+			</div>
+		</div>
+
 
 		<div class="ui divider"></div>
 

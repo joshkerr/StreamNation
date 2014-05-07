@@ -2,7 +2,7 @@ var auth;
 
 angular.module("StreamNation", []);
 
-angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http) {
+angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http, $window) {
 
 	$.ajaxSetup({
 		headers: { 'X-API-Version' : '1.1' }
@@ -19,8 +19,40 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 	};
 	$scope.user = {};
 	$scope.oldUser = {};
+	$scope.history = {};
 	$scope.newVideosDefaultFolder = '';
 	$scope.newImagesDefaultFolder = '';
+
+	function deleteFromHistory (key) {
+		$scope.history.splice(key, 1);
+		auth.history = $scope.history;
+		chrome.storage.sync.set({ "StreamNationAuth" : auth });
+	}
+
+	function setExtraInfos (key, title, picture) {
+		$scope.history[key].title = title;
+		$scope.history[key].picture = picture;
+	}
+
+	function extraInfos() {
+		angular.forEach($scope.history, function (item, key) {
+			$.ajax({
+				method: 'GET',
+				url: 'https://api.streamnation.com/api/v1/content/' + item.id,
+				data: { auth_token: auth.auth_token },
+				dataType: 'json',
+				success: function (res) {
+					console.log(res);
+					setExtraInfos(key, res.content.title);
+				},
+				error: function (err) {
+					if (err.status === 404) {
+						deleteFromHistory(key);
+					}
+				}
+			});
+		});
+	}
 
 	chrome.storage.sync.get('StreamNationAuth', function (result) {
 		if (result === null || isEmpty(result) || result.StreamNationAuth === null) {
@@ -29,6 +61,9 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 		else {
 			auth = result.StreamNationAuth;
 			$scope.user = auth.user;
+			$scope.history = auth.history;
+			console.log($scope.history);
+			extraInfos();
 			$.extend($scope.oldUser, $scope.user);
 			$.ajax({
 				method: 'GET',
@@ -61,7 +96,6 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 		}
 	});
 
-	//chrome.storage.sync.set({ "StreamNationConfig" : null });
 	chrome.storage.sync.get('StreamNationConfig', function (result) {
 		if (result === null || isEmpty(result) || result.StreamNationConfig === null) {
 		}
@@ -69,6 +103,16 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 			$scope.config = result.StreamNationConfig;
 		}
 	});
+
+	$scope.viewSource = function (url) {
+		$window.open(url);
+	};
+
+	$scope.deleteHistory = function () {
+		$scope.history = null;
+		auth.history = null;
+		chrome.storage.sync.set({ "StreamNationAuth" : auth });
+	};
 
 	$scope.update = function (type) {
 		if ($scope.oldUser != $scope.user) {
@@ -106,8 +150,8 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 					title: $scope.newVideosDefaultFolder
 				},
 				success: function (res) {
-					$scope.config.videos.defaultFolder.name = $scope.newVideosDefaultFolder;
-					$scope.config.videos.defaultFolder.id = res.id;
+					$scope.config.videos.defaultFolder.name = res.content.title;
+					$scope.config.videos.defaultFolder.id = res.content.id;
 					$scope.library.push(res.content);
 					$scope.newVideosDefaultFolder = '';
 					chrome.storage.sync.set({ "StreamNationConfig" : $scope.config });
@@ -131,8 +175,8 @@ angular.module("StreamNation").controller("OptionsCtrl", function ($scope, $http
 					title: $scope.newImagesDefaultFolder
 				},
 				success: function (res) {
-					$scope.config.images.defaultFolder.name = $scope.newImagesDefaultFolder;
-					$scope.config.images.defaultFolder.id = res.id;
+					$scope.config.images.defaultFolder.name = res.content.title;
+					$scope.config.images.defaultFolder.id = res.content.id;
 					$scope.library.push(res.content);
 					$scope.newImagesDefaultFolder = '';
 					chrome.storage.sync.set({ "StreamNationConfig" : $scope.config });

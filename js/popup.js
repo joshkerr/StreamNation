@@ -61,7 +61,7 @@ window.onload = function () {
 			$('.supportedUpload').fadeIn();
 		}
 		else {
-			$('.supportedUpload').text("This website is not supported yet.").fadeIn();
+			$('.supportedUpload').text("This website is not supported yet.").fadeIn().addClass('inactive');
 			$('.supportedUpload').unbind('click');
 		}
 	});
@@ -138,6 +138,23 @@ window.onload = function () {
 			},
 			dataType: 'json',
 			success: function (res) {
+				var saveUpload = {
+					id: res.content.id,
+					parent_id: res.content.parent_id,
+					date: res.content.created_at,
+					source: current.url
+				}
+				var add = true;
+				auth.history = (!auth.history) ? [] : auth.history;
+				for (var i = 0; i < auth.history.length; i++) {
+					if (saveUpload.id === auth.history[i].id) {
+						add = false;
+					}
+				};
+				if (add) {
+					auth.history.push(saveUpload);
+					chrome.storage.sync.set({ "StreamNationAuth" : auth });
+				}
 				$('.supportedUpload').addClass('inactive').unbind('click');
 				$('.message').text("Upload started !").fadeIn();
 				setTimeout(function () {
