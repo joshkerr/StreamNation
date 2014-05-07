@@ -29,6 +29,14 @@ function reloadAuth() {
 };
 chrome.storage.sync.get('StreamNationConfig', function (result) {
 	if (result === null || isEmpty(result) || result.StreamNationConfig === null) {
+		config = {
+			videos : {
+				defaultFolder : { name : '/', id: null }
+			},
+			images: {
+				defaultFolder : { name : '/', id: null }
+			}
+		}
 	}
 	else {
 		config = result.StreamNationConfig;

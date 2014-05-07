@@ -38,7 +38,14 @@ window.onload = function () {
 
 	chrome.storage.sync.get('StreamNationConfig', function (result) {
 		if (result === null || isEmpty(result) || result.StreamNationConfig === null) {
-			config.defaultFolder = '/';
+			config = {
+				videos : {
+					defaultFolder : { name : '/', id: null }
+				},
+				images: {
+					defaultFolder : { name : '/', id: null }
+				}
+			}
 		}
 		else {
 			config = result.StreamNationConfig;
@@ -57,7 +64,7 @@ window.onload = function () {
 			current.domain === 'archive.org' ||
 			current.domain === 'blip.tv' ||
 			current.domain === 'vzaar.com' ||
-			current.domain === 'www.ted.com') {
+		current.domain === 'www.ted.com') {
 			$('.supportedUpload').fadeIn();
 		}
 		else {
